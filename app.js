@@ -52,6 +52,8 @@ document.querySelector(".btn-roll").addEventListener("click", function () {
       playerChange();
       diceDom.src = "dice-1.png";
     }
+  } else {
+    alert("Тоглоом дууссан тул NEW GAME товчийг дарж дахин эхэлнүү");
   }
 });
 //Hold дархад явагдах event
@@ -61,7 +63,7 @@ document.querySelector(".btn-hold").addEventListener("click", function () {
     CollectedScore[activePlayer] = CollectedScore[activePlayer] + roundScore;
     document.getElementById("score-" + activePlayer).textContent =
       CollectedScore[activePlayer];
-  }
+  } else alert("Тоглоом дууссан тул NEW GAME товчийг дарж дахин эхэлнүү");
   if (CollectedScore[activePlayer] > 100) {
     isGameOver = false;
     document.getElementById("name-" + activePlayer).textContent = "WINNER!!!";
