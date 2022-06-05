@@ -2,6 +2,7 @@
 var activePlayer = 0; //Тоглогч 1-р тоглогч=0 2-р тоглогч = 1
 var CollectedScore = [0, 0]; //Тоглогчийн цуглуулсан оноо
 var roundScore = 0; //Тоглогчийн нэг үед цуглуулсан оноо
+newGame();
 //Тоглогч солих
 function playerChange() {
   roundScore = 0;
@@ -15,7 +16,7 @@ function newGame() {
   activePlayer = 0;
   CollectedScore = [0, 0];
   roundScore = 0;
-
+  isGameOver = true;
   document.getElementById("current-0").textContent = "0";
   document.getElementById("current-1").textContent = "0";
   document.getElementById("score-0").textContent = "0";
@@ -38,23 +39,31 @@ var diceDom = document.querySelector(".dice");
 diceDom.style.display = "none";
 //Roll дархад явагдах event
 document.querySelector(".btn-roll").addEventListener("click", function () {
-  var diceNumber = Math.floor(Math.random() * 6) + 1;
-  diceDom.style.display = "block";
-  diceDom.src = "dice-" + diceNumber + ".png";
-  if (diceNumber !== 1) {
-    roundScore = roundScore + diceNumber;
-    document.getElementById("current-" + activePlayer).textContent = roundScore;
-  } else {
-    playerChange();
-    diceDom.src = "dice-1.png";
+  //isGameOver=false байх тохиолдолд roll-btn ажиллахгүй
+  if (isGameOver !== false) {
+    var diceNumber = Math.floor(Math.random() * 6) + 1;
+    diceDom.style.display = "block";
+    diceDom.src = "dice-" + diceNumber + ".png";
+    if (diceNumber !== 1) {
+      roundScore = roundScore + diceNumber;
+      document.getElementById("current-" + activePlayer).textContent =
+        roundScore;
+    } else {
+      playerChange();
+      diceDom.src = "dice-1.png";
+    }
   }
 });
 //Hold дархад явагдах event
 document.querySelector(".btn-hold").addEventListener("click", function () {
-  CollectedScore[activePlayer] = CollectedScore[activePlayer] + roundScore;
-  document.getElementById("score-" + activePlayer).textContent =
-    CollectedScore[activePlayer];
+  //isGameOver = false байх тохиолдолд hold-btn ажиллахгүй
+  if (isGameOver !== false) {
+    CollectedScore[activePlayer] = CollectedScore[activePlayer] + roundScore;
+    document.getElementById("score-" + activePlayer).textContent =
+      CollectedScore[activePlayer];
+  }
   if (CollectedScore[activePlayer] > 100) {
+    isGameOver = false;
     document.getElementById("name-" + activePlayer).textContent = "WINNER!!!";
     document
       .querySelector(".player-" + activePlayer + "-panel")
@@ -62,6 +71,7 @@ document.querySelector(".btn-hold").addEventListener("click", function () {
     document
       .querySelector(".player-" + activePlayer + "-panel")
       .classList.remove("active");
+    diceDom.style.display = "none";
   } else {
     playerChange();
     diceDom.style.display = "none";
