@@ -1,10 +1,17 @@
 //  Toglogchiin eelj solih func
 // neg dugeer togloch 0 hoer dugaar togloch 1
 var activePlayer = 0;
+function playerChange() {
+  roundScore = 0;
+  document.getElementById("current-" + activePlayer).textContent = roundScore;
+  activePlayer === 0 ? (activePlayer = 1) : (activePlayer = 0);
+  document.querySelector(".player-0-panel").classList.toggle("active");
+  document.querySelector(".player-1-panel").classList.toggle("active");
+  diceDom.style.display = "none";
+}
 
 //  Tsugluulsan ono hadgalah func
-var playerCollectedScore = [0, 0];
-var playerClickHold = 0;
+var CollectedScore = [0, 0];
 //  Toglogchiiin eeljind tsugluusan onoo ni func
 
 var roundScore = 0;
@@ -31,54 +38,37 @@ var diceDom = document.querySelector(".dice");
 
 // --------------Roll Dice ----------------------//
 document.querySelector(".btn-roll").addEventListener("click", function () {
-  //---------------------------------------------//
-
   var diceNumber = Math.floor(Math.random() * 6) + 1;
-  //Dice image gargah
   diceDom.style.display = "block";
-  //buusan shooni image
   diceDom.src = "dice-" + diceNumber + ".png";
 
-  ////-----------------------------------------------Toglog-solih-
-  //player round score oorchlolt bolon nemelt 1 baig ym bol bvh onoo 0 bolno.
   if (diceNumber !== 1) {
-    //1 ees ih buulwal roundscore luu hiine
     roundScore = roundScore + diceNumber;
     document.getElementById("current-" + activePlayer).textContent = roundScore;
-  }
-  //1buusan tohioldol onoog 0 bolgono
-  else {
-    roundScore = 0;
-    document.getElementById("current-" + activePlayer).textContent = roundScore;
-    //1 buusan tohioldold toglogch solino
-    activePlayer === 0 ? (activePlayer = 1) : (activePlayer = 0);
-
-    ///active player shiljuuleh
-    document.querySelector(".player-0-panel").classList.toggle("active");
-    document.querySelector(".player-1-panel").classList.toggle("active");
+  } else {
+    playerChange();
   }
 });
-///--------------------------------Hold-btn-
-// document.querySelector(".btn-hold").addEventListener("click", function () {
-//   if (playerClickHold === 0) {
-//     playerClickHold = 1;
-//     playerCollectedScore[activePlayer] =
-//       playerCollectedScore[activePlayer] + roundScore;
-//     document.getElementById("score-" + activePlayer).textContent =
-//       playerCollectedScore[activePlayer];
-//     roundScore = 0;
-//     document.getElementById("current-" + activePlayer).textContent = 0;
-//     document.querySelector(".player-0-panel").classList.toggle("active");
-//     document.querySelector(".player-1-panel").classList.toggle("active");
-//   } else {
-//     playerClickHold = 0;
-//     playerCollectedScore[activePlayer] =
-//       playerCollectedScore[activePlayer] + roundScore;
-//     document.getElementById("score-" + activePlayer).textContent =
-//       playerCollectedScore[activePlayer];
-//     roundScore = 0;
-//     document.getElementById("current-" + activePlayer).textContent = 0;
-//     document.querySelector(".player-1-panel").classList.toggle("active");
-//     document.querySelector(".player-0-panel").classList.toggle("active");
-//   }
-// });
+//----------------------------------------------------------HOLD---------------------------------//
+document.querySelector(".btn-hold").addEventListener("click", function () {
+  CollectedScore[activePlayer] = CollectedScore[activePlayer] + roundScore;
+  document.getElementById("score-" + activePlayer).textContent =
+    CollectedScore[activePlayer];
+  ///hojson eshiig shalgah
+
+  if (CollectedScore[activePlayer] > 100) {
+    document.getElementById("name-" + activePlayer).textContent = "WINNER!!!";
+    document
+      .querySelector(".player-" + activePlayer + "-panel")
+      .classList.add("winner");
+    document
+      .querySelector(".player-" + activePlayer + "-panel")
+      .classList.remove("active");
+  } else {
+    playerChange();
+  }
+});
+
+//New game
+
+document.querySelector(".btm");
